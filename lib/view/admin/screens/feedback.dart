@@ -23,21 +23,23 @@ class Feedbackdr extends StatelessWidget {
     final instance = Provider.of<Firebasecontroller>(context);
 
     return Scaffold(
-      body: StreamBuilder(
-        stream: instance.getFeedback(),
+      body: FutureBuilder(
+        future: instance.fetchFeedback(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          List<FeedBackModel> list = [];
+          // List<FeedBackModel> list = [];
 
-          list = snapshot.data!.docs.map((e) {
-            return FeedBackModel.fromjsone(e.data() as Map<String, dynamic>);
-          }).toList();
+          // list = snapshot.data!.docs.map((e) {
+          //   log("${e.data() as Map<String, dynamic>}");
+          //   return FeedBackModel.fromjsone(e.data() as Map<String, dynamic>);
+          // }).toList();
 
           if (snapshot.hasData) {
+            final data = instance.listOfFeedback;
             return Column(
               children: [
                 Container(
@@ -57,7 +59,7 @@ class Feedbackdr extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: list.isEmpty
+                  child: data.isEmpty
                       ? Center(
                           child: Textwidget(
                             text: 'no feed back',
@@ -67,12 +69,12 @@ class Feedbackdr extends StatelessWidget {
                       : Container(
                           width: double.infinity,
                           child: ListView.separated(
-                            itemCount: list.length,
+                            itemCount: data.length,
                             itemBuilder: (context, index) {
-                              final count = list[index].exeperinece;
+                              final count = data[index].exeperinece;
                               log(count.toString());
 
-                              final uid = list[index].uid;
+                              final uid = data[index].uid;
 
                               final userdata =
                                   db.collection('users').doc(uid).snapshots();
@@ -121,22 +123,22 @@ class Feedbackdr extends StatelessWidget {
                                       ),
                                       Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Text(list[index].uid),
-                                            ],
-                                          ),
-                                          Text('NAME: ${list[index].name}'),
+                                          // Column(
+                                          //   children: [
+                                          //     Text(data[index].uid),
+                                          //   ],
+                                          // ),
+                                          Text('NAME: ${data[index].name}'),
                                           SizedBox(
                                             height: HelperWh.H(context) * .010,
                                           ),
                                           Text(
-                                              'SUGGEST FEED BACK: ${list[index].suggest}'),
+                                              'SUGGEST FEED BACK: ${data[index].suggest}'),
                                           SizedBox(
                                             height: HelperWh.H(context) * .010,
                                           ),
                                           Text(
-                                              'SUGGEST FEED BACK: ${list[index].exeperinece}'),
+                                              'SUGGEST FEED BACK: ${data[index].exeperinece}'),
                                           SizedBox(
                                             width: 120,
                                             child: EmojiFeedback(
@@ -148,7 +150,7 @@ class Feedbackdr extends StatelessWidget {
                                               inactiveElementScale: .5,
                                               elementSize: 20,
                                               initialRating:
-                                                  list[index].exeperinece,
+                                                  data[index].exeperinece,
                                               showLabel: false,
                                               onChanged: (value) {
                                                 // helper.newEmoji(value);
@@ -178,72 +180,72 @@ class Feedbackdr extends StatelessWidget {
   }
 }
 
-emojicount(count, BuildContext context) {
-  switch (count) {
-    case '1':
-      Row(
-        children: [
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-        ],
-      );
-    case '2':
-      Row(
-        children: [
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-        ],
-      );
+// emojicount(count, BuildContext context) {
+//   switch (count) {
+//     case '1':
+//       Row(
+//         children: [
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//         ],
+//       );
+//     case '2':
+//       Row(
+//         children: [
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//         ],
+//       );
 
-    case '3':
-      Row(
-        children: [
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-        ],
-      );
-    case '4':
-      Row(
-        children: [
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-        ],
-      );
-      break;
-    default:
-      ErorrToast(context, 'error type');
-      break;
-  }
-}
+//     case '3':
+//       Row(
+//         children: [
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//         ],
+//       );
+//     case '4':
+//       Row(
+//         children: [
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//           Icon(
+//             Icons.star,
+//             color: Colors.amber,
+//           ),
+//         ],
+//       );
+//       break;
+//     default:
+//       ErorrToast(context, 'error type');
+//       break;
+//   }
+// }

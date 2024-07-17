@@ -227,11 +227,11 @@ Widget dashbord(BuildContext context) {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                // Text(
-                                                //   snapshot.data!['usertype'],
-                                                //   style: TextStyle(
-                                                //       color: Colors.white),
-                                                // ),
+                                                Text(
+                                                  snapshot.data!['usertype'],
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
                                                 Text(''),
                                               ],
                                             );

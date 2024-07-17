@@ -431,8 +431,14 @@ class Firebasecontroller with ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<QuerySnapshot> getFeedback() {
-    return db.collection('feedback').snapshots();
+  // Stream<QuerySnapshot> getFeedback() {
+  //   return db.collection('feedback').snapshots();
+  // }
+  List<FeedBackModel> listOfFeedback = [];
+  Future<List<FeedBackModel>> fetchFeedback() async {
+    final snapshot = await db.collection("feedback").get();
+    return listOfFeedback =
+        snapshot.docs.map((e) => FeedBackModel.fromjsone(e.data()!)).toList();
   }
 
   Future addSalery(Addsalerymodel addsalerymodel) async {
